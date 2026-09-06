@@ -47,7 +47,7 @@ public class NotificationService {
                                                 request.auth()));
         }
 
-        @Scheduled(cron = "0 35 22 * * *", zone = "Asia/Seoul")
+        @Scheduled(cron = "0 30 11 * * *", zone = "Asia/Seoul")
         @Transactional
         public void sendToCustomers() {
 
