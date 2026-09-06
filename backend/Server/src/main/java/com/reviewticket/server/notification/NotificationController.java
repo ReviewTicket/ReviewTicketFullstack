@@ -23,4 +23,12 @@ public class NotificationController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/test")
+    public ResponseEntity<Void> sendToCustomers(
+            @AuthenticationPrincipal User user) throws Exception {
+
+        notificationService.sendToCustomers();
+
+        return ResponseEntity.ok().build();
+    }
 }
