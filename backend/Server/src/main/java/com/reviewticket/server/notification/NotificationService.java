@@ -3,6 +3,8 @@ package com.reviewticket.server.notification;
 import com.reviewticket.server.domain.Notification;
 import com.reviewticket.server.repository.NotificationRepository;
 import com.reviewticket.server.repository.UserRepository;
+
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.reviewticket.server.domain.Role;
@@ -45,15 +47,17 @@ public class NotificationService {
                                                 request.auth()));
         }
 
+        @Scheduled(cron = "0 30 11 * * *", zone = "Asia/Seoul")
         @Transactional(readOnly = true)
         public void sendToCustomers() throws Exception {
+                System.out.println("=== CUSTOMER 알림 스케줄러 실행 ===");
 
                 var subscriptions = notificationRepository.findAllByUserRole(Role.CUSTOMER);
 
                 String payload = """
                                 {
                                   "title": "Review Ticket",
-                                  "body": "점심 시간이 다가오고 있어요!\n오늘 점심은 무엇을 주문할까요?"
+                                  "body": "점심 시간이 다가오고 있어요!오늘 점심은 무엇을 주문할까요?"
                                 }
                                 """;
 
