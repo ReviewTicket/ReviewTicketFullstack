@@ -9,6 +9,7 @@ import { STORE_CACHE_KEY } from "@/entities/store/storeCache";
 import type { Store } from "@/entities/store";
 import type { StoreSort } from "@/api/storeApi";
 import { Modal } from "@/shared/ui/Modal";
+import { request } from "@/shared/api/client";
 
 function getCachedStores(): Store[] | null {
   const cached = localStorage.getItem(STORE_CACHE_KEY);
@@ -79,6 +80,19 @@ export function HomePage() {
     };
   }, []);
 
+  const handleTestNotification = async () => {
+    try {
+      await request("/notifications/test", {
+        method: "POST",
+        auth: true,
+      });
+
+      console.log("테스트 알림 발송 요청 성공");
+    } catch (error) {
+      console.error("테스트 알림 발송 실패:", error);
+    }
+  };
+
   const handleAllowNotification = async () => {
     if (!("Notification" in window)) return;
     if (!("serviceWorker" in navigator)) return;
@@ -114,6 +128,20 @@ export function HomePage() {
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
         });
+
+        const subscriptionJson = subscription.toJSON();
+
+        await request("/notifications/subscription", {
+          method: "POST",
+          auth: true,
+          body: {
+            endpoint: subscriptionJson.endpoint,
+            p256dh: subscriptionJson.keys?.p256dh,
+            auth: subscriptionJson.keys?.auth,
+          },
+        });
+
+        console.log("Push Subscription:", subscription);
       }
 
       console.log("Push Subscription:", subscription);
@@ -233,6 +261,14 @@ export function HomePage() {
           description="리뷰 배지가 붙은 가게에서 주문하고 사진 리뷰를 남기면 티켓을 받아요."
         />
       </section>
+
+      <button
+        type="button"
+        onClick={handleTestNotification}
+        className="px-4 py-2 bg-black text-white rounded"
+      >
+        테스트 알림 보내기
+      </button>
 
       {/* Store List Section */}
       <section className="flex flex-col gap-3">

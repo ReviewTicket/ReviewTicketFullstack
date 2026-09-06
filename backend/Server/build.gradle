@@ -28,6 +28,9 @@ dependencies {
 	// JWT. api 만 컴파일에 노출하고 구현체는 런타임에만 둔다 —
 	// 실수로 내부 클래스를 직접 import 하는 걸 막는다.
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+	// web-push
+	implementation 'nl.martijndwars:web-push:5.1.1'
+	implementation 'org.bouncycastle:bcprov-jdk18on:1.81'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 	runtimeOnly 'com.mysql:mysql-connector-j'
