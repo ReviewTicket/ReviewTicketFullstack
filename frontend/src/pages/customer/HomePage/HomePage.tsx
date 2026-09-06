@@ -80,19 +80,6 @@ export function HomePage() {
     };
   }, []);
 
-  const handleTestNotification = async () => {
-    try {
-      await request("/notifications/test", {
-        method: "POST",
-        auth: true,
-      });
-
-      console.log("테스트 알림 발송 요청 성공");
-    } catch (error) {
-      console.error("테스트 알림 발송 실패:", error);
-    }
-  };
-
   const handleAllowNotification = async () => {
     if (!("Notification" in window)) return;
     if (!("serviceWorker" in navigator)) return;
@@ -261,14 +248,6 @@ export function HomePage() {
           description="리뷰 배지가 붙은 가게에서 주문하고 사진 리뷰를 남기면 티켓을 받아요."
         />
       </section>
-
-      <button
-        type="button"
-        onClick={handleTestNotification}
-        className="px-4 py-2 bg-black text-white rounded"
-      >
-        테스트 알림 보내기
-      </button>
 
       {/* Store List Section */}
       <section className="flex flex-col gap-3">
