@@ -9,6 +9,7 @@ import { STORE_CACHE_KEY } from "@/entities/store/storeCache";
 import type { Store } from "@/entities/store";
 import type { StoreSort } from "@/api/storeApi";
 import { Modal } from "@/shared/ui/Modal";
+import { request } from "@/shared/api/client";
 
 function getCachedStores(): Store[] | null {
   const cached = localStorage.getItem(STORE_CACHE_KEY);
@@ -114,6 +115,20 @@ export function HomePage() {
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
         });
+
+        const subscriptionJson = subscription.toJSON();
+
+        await request("/notifications/subscription", {
+          method: "POST",
+          auth: true,
+          body: {
+            endpoint: subscriptionJson.endpoint,
+            p256dh: subscriptionJson.keys?.p256dh,
+            auth: subscriptionJson.keys?.auth,
+          },
+        });
+
+        console.log("Push Subscription:", subscription);
       }
 
       console.log("Push Subscription:", subscription);
