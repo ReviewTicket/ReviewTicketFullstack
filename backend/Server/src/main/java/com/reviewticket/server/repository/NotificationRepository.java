@@ -14,6 +14,8 @@ public interface NotificationRepository
 
     Optional<NotificationRepository> findByEndpoint(String endpoint);
 
+    void deleteByEndpoint(String endpoint);
+
     @Query("""
                 SELECT n
                 FROM Notification n

@@ -47,26 +47,49 @@ public class NotificationService {
                                                 request.auth()));
         }
 
-        @Scheduled(cron = "0 30 11 * * *", zone = "Asia/Seoul")
-        @Transactional(readOnly = true)
-        public void sendToCustomers() throws Exception {
-                System.out.println("=== CUSTOMER 알림 스케줄러 실행 ===");
+        @Scheduled(cron = "0 35 22 * * *", zone = "Asia/Seoul")
+        @Transactional
+        public void sendToCustomers() {
 
                 var subscriptions = notificationRepository.findAllByUserRole(Role.CUSTOMER);
 
                 String payload = """
                                 {
                                   "title": "Review Ticket",
-                                  "body": "점심 시간이 다가오고 있어요!오늘 점심은 무엇을 주문할까요?"
+                                  "body": "오늘 점심은 무엇을 주문할까요?"
                                 }
                                 """;
 
                 for (var subscription : subscriptions) {
-                        webPushService.send(
-                                        subscription.getEndpoint(),
-                                        subscription.getP256dh(),
-                                        subscription.getAuth(),
-                                        payload);
+                        try {
+                                var response = webPushService.send(
+                                                subscription.getEndpoint(),
+                                                subscription.getP256dh(),
+                                                subscription.getAuth(),
+                                                payload);
+
+                                int statusCode = response.getStatusLine().getStatusCode();
+
+                                if (statusCode == 404 || statusCode == 410) {
+                                        notificationRepository.deleteByEndpoint(
+                                                        subscription.getEndpoint());
+
+                                        System.out.println(
+                                                        "만료된 subscription 삭제: userId="
+                                                                        + subscription.getUser().getId());
+
+                                } else {
+                                        System.out.println(
+                                                        "알림 발송 완료: userId="
+                                                                        + subscription.getUser().getId()
+                                                                        + ", status=" + statusCode);
+                                }
+                        } catch (Exception e) {
+                                System.err.println(
+                                                "알림 발송 실패: userId=" +
+                                                                subscription.getUser().getId());
+                                e.printStackTrace();
+                        }
                 }
         }
 }

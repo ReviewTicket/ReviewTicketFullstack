@@ -9,6 +9,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.security.Security;
+import org.apache.http.HttpResponse;
 
 @Service
 public class WebPushService {
@@ -30,19 +31,16 @@ public class WebPushService {
         }
     }
 
-    public void send(
+    public HttpResponse send(
             String endpoint,
             String p256dh,
             String auth,
             String payload) throws Exception {
 
         Subscription.Keys keys = new Subscription.Keys(p256dh, auth);
-
         Subscription subscription = new Subscription(endpoint, keys);
-
         Notification notification = new Notification(subscription, payload);
 
-        pushService.send(
-                notification);
+        return pushService.send(notification);
     }
 }
