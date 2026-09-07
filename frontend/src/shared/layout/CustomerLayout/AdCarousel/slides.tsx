@@ -6,8 +6,8 @@ import saladImage from "@/asset/salad.png";
 export interface AdSlide {
   id: string;
   eyebrow: string;
-  title: string;
-  description: string;
+  title: ReactNode;
+  description: ReactNode;
   /** 슬라이드 배경. 광고라 채도 높은 단색으로 둔다(그라디언트 금지). */
   backgroundClass: string;
   /** 배경 위 전경색. 배경마다 대비가 확보되는 값을 고른다. */
@@ -43,8 +43,8 @@ function TicketArt() {
 /**
  * 사진 광고 미디어. 문구가 이미 내용을 다 말하므로 alt 는 비워 장식으로 둔다.
  *
- * 미디어 박스(80px)는 레이아웃 기준으로 그대로 두고, 사진만 2.5배로 키워
- * 박스 밖으로 넘치게 한다 — 텍스트 폭을 뺏지 않으면서 사진만 크게 보인다.
+ * 미디어 박스(80px)는 레이아웃 기준으로 그대로 두고, 사진만 1.5배로 키워
+ * 박스 밖으로 넘치게 한다 — 모바일에서 잘리지 않으면서 사진을 크게 보인다.
  */
 function SlideImage({ src }: { src: string }) {
   return (
@@ -52,7 +52,7 @@ function SlideImage({ src }: { src: string }) {
       src={src}
       alt=""
       loading="lazy"
-      className="size-full origin-right scale-200 object-contain"
+      className="size-full origin-right scale-150 object-contain"
     />
   );
 }
@@ -61,8 +61,14 @@ export const AD_SLIDES: AdSlide[] = [
   {
     id: "intro",
     eyebrow: "신규 가입 시",
-    title: "리뷰티켓 3장 자동지급",
-    description: "리뷰 배지가 붙은 가게에서 무료 주문이 가능해요!",
+    title: (
+      <>
+        리뷰티켓
+        <br />
+        3장 자동지급
+      </>
+    ),
+    description: <>리뷰 배지가 붙은 가게에서<br />무료 주문이 가능해요!</>,
     backgroundClass: "bg-brand-800",
     foregroundClass: "text-white",
     media: <TicketArt />,
@@ -71,7 +77,7 @@ export const AD_SLIDES: AdSlide[] = [
     id: "salad",
     eyebrow: "오전 11시",
     title: "샐러드 20% 할인",
-    description: "오전 11시부터 샐러드 20% 할인 쿠폰 선착순 발급",
+    description: <>오전 11시부터 샐러드 20%<br />할인 쿠폰 선착순 발급</>,
     backgroundClass: "bg-green-800",
     foregroundClass: "text-white",
     media: <SlideImage src={saladImage} />,
@@ -80,7 +86,7 @@ export const AD_SLIDES: AdSlide[] = [
     id: "chicken",
     eyebrow: "오후 6시",
     title: "치킨 20% 할인",
-    description: "오후 6시부터 치킨 20% 할인 쿠폰 선착순 발급",
+    description: <>오후 6시부터 치킨 20%<br />할인 쿠폰 선착순 발급</>,
     backgroundClass: "bg-ink-900",
     foregroundClass: "text-white",
     media: <SlideImage src={chickenImage} />,
