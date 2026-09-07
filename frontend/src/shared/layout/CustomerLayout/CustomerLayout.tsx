@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { Header } from "./Header";
 import { BottomNavigation } from "./BottomNavigation";
+import { AdCarousel } from "./AdCarousel";
 
 export function CustomerLayout() {
   const location = useLocation();
@@ -16,6 +17,8 @@ export function CustomerLayout() {
     <div className="min-h-screen bg-fill-100">
       <div className="relative mx-auto flex min-h-screen w-full max-w-[860px] flex-col bg-surface-sub shadow-flat">
         <Header />
+
+        <AdCarousel />
 
         <main className="flex-1">
           <Outlet />
