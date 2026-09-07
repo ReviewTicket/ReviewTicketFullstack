@@ -74,24 +74,6 @@ export function AdCarousel() {
         ))}
       </div>
 
-      <button
-        type="button"
-        onClick={() => goTo(index - 1)}
-        aria-label="이전 광고"
-        className={`${controlClass} left-1`}
-      >
-        <ChevronLeft size={20} aria-hidden="true" />
-      </button>
-
-      <button
-        type="button"
-        onClick={() => goTo(index + 1)}
-        aria-label="다음 광고"
-        className={`${controlClass} right-1`}
-      >
-        <ChevronRight size={20} aria-hidden="true" />
-      </button>
-
       {/* 페이지네이션 — 점만 두면 터치 타깃이 모자라서 버튼을 44px 로 두고
           안쪽 점만 작게 그린다. */}
       <div className="absolute inset-x-0 bottom-0 z-10 flex items-center justify-center">
