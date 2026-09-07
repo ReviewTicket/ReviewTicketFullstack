@@ -25,6 +25,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        cache.use_second_level_cache: false
     # dialect 는 일부러 적지 않는다 — Boot 4/Hibernate 7 에서 MySQL8Dialect 같은
     # 버전별 이름이 제거됐다. 안 적으면 드라이버가 알아서 감지한다.
 
@@ -111,3 +112,4 @@ reviewticket:
 logging:
   level:
     org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace

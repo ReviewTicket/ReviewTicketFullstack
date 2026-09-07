@@ -48,7 +48,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException {
 
+        System.out.println("[JwtAuthFilter] Filtering: " + request.getRequestURI());
         String header = request.getHeader(HEADER);
+        System.out.println("[JwtAuthFilter] Authorization header: " + header);
         if (header != null && header.startsWith(PREFIX)) {
             String token = header.substring(PREFIX.length()).trim();
             authenticate(token);
@@ -61,11 +63,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (parsed == null) {
             return;
         }
+        System.out.println("[JWT] Looking up user with ID: " + parsed.userId());
         Optional<User> found = userRepository.findById(parsed.userId());
         if (found.isEmpty()) {
+            System.out.println("[JWT] User not found");
             return;
         }
         User user = found.get();
+        System.out.println("[JWT] User loaded: " + user.getId() + ", tickets: " + user.getTickets());
 
         // 비밀번호가 바뀌면 서버의 버전이 올라가 옛 토큰은 여기서 걸러진다.
         if (parsed.tokenVersion() == null || parsed.tokenVersion() != user.getTokenVersion()) {
