@@ -83,7 +83,7 @@ reviewticket:
     # 티켓만 소멸했다.
     #
     # 프론트는 서버가 계산해 내려준 마감 시각을 그대로 표시하므로 이 줄만 고치면 된다.
-    review-ttl: 10m
+    review-ttl: 12h
   ai:
     # AI 서버 주소. 로컬 개발 기본값만 두고, 다른 PC 에서 띄운 경우는
     # application-local.yml 에서 덮어쓴다(auth.base-url 과 같은 이유).
