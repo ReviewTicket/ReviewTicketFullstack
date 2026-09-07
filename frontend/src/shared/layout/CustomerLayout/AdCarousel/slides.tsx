@@ -52,7 +52,7 @@ function SlideImage({ src }: { src: string }) {
       src={src}
       alt=""
       loading="lazy"
-      className="size-full origin-center scale-200 object-contain"
+      className="size-full origin-right scale-200 object-contain"
     />
   );
 }
